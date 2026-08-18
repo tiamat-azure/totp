@@ -1,0 +1,231 @@
+/* Palette : un seul jeu de variables, redefini pour le theme clair. */
+:root {
+  --bg: #14161a;
+  --fg: #e8eaed;
+  --muted: #8b9199;
+  --accent: #5b9dff;
+  --card: #1c1f25;
+  --border: #2a2f37;
+  --danger: #ff6b6b;
+  --radius: 14px;
+}
+
+[data-theme="light"] {
+  --bg: #f7f8fa;
+  --fg: #1a1c20;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --card: #ffffff;
+  --border: #e3e6ea;
+  --danger: #d92d20;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem 1rem;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.app {
+  width: 100%;
+  max-width: 30rem;
+}
+
+.screen {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand { width: 4rem; }
+
+h1 { margin: 0; font-size: 1.5rem; font-weight: 600; }
+h2 { margin: 0 0 0.25rem; font-size: 0.95rem; font-weight: 600; }
+
+.lead, .hint { margin: 0; color: var(--muted); font-size: 0.9rem; }
+.warn { margin: 0; color: var(--muted); font-size: 0.78rem; }
+
+/* Bascule de theme, ancree en haut a droite de la page. */
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--card);
+  color: var(--fg);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+
+/* QR code et infobulle de revelation du secret. */
+.qr-wrapper { position: relative; display: inline-block; }
+
+.qr {
+  width: 15rem;
+  height: 15rem;
+  display: block;
+  padding: 0.75rem;
+  border-radius: var(--radius);
+  background: #ffffff;
+  border: 1px solid var(--border);
+}
+
+.tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: -0.5rem;
+  transform: translate(-50%, 100%);
+  min-width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease;
+  z-index: 2;
+}
+.qr-wrapper:hover .tooltip,
+.qr-wrapper:focus-within .tooltip { opacity: 1; visibility: visible; }
+
+.tooltip-label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.tooltip code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8rem;
+  word-break: break-all;
+}
+
+/* Code TOTP et compte a rebours. */
+.code-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: clamp(2rem, 9vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+.code.expiring { color: var(--danger); }
+
+.countdown { position: relative; width: 3rem; height: 3rem; flex: none; }
+.ring { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring-track, .ring-progress {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.ring-track { stroke: var(--border); }
+.ring-progress {
+  stroke: var(--accent);
+  stroke-dasharray: 125.6; /* 2 * PI * 20 */
+  transition: stroke-dashoffset 0.2s linear;
+}
+.code.expiring ~ .countdown .ring-progress { stroke: var(--danger); }
+
+.remaining {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+/* Formulaire de configuration. */
+.config {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  text-align: left;
+}
+
+.config-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+input, select {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+#secret-input { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.04em; }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.button {
+  padding: 0.55rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--fg);
+  font-size: 0.88rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.button:hover { border-color: var(--accent); }
+.button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.button.primary:hover { filter: brightness(1.08); }
+.button.ghost { background: transparent; border-color: transparent; color: var(--muted); }
+
+.feedback { margin: 0.25rem 0 0; min-height: 1.1rem; font-size: 0.8rem; color: var(--muted); }
+.feedback.error { color: var(--danger); }
+.feedback.ok { color: var(--accent); }

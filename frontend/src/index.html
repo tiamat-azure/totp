@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TOTP - OPT-NC</title>
+  <link rel="icon" href="opt-cagou.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Changer de theme">🌙</button>
+
+  <main class="app">
+
+    <!-- Ecran 1 : appairage -->
+    <section id="screen-pairing" class="screen">
+      <img class="brand" src="opt-cagou.svg" alt="OPT-NC">
+      <h1>Appairez votre application</h1>
+      <p class="lead">
+        Scannez ce QR code avec Google Authenticator, Authy ou toute application compatible TOTP.
+      </p>
+
+      <div class="qr-wrapper" id="qr-wrapper">
+        <img id="qr-image" class="qr" alt="QR code otpauth">
+        <div class="tooltip" id="secret-tooltip">
+          <span class="tooltip-label">Secret Base32</span>
+          <code id="secret-value">…</code>
+        </div>
+      </div>
+      <p class="hint">Survolez le QR code pour reveler le secret.</p>
+
+      <div class="actions">
+        <button id="btn-see-code" class="button primary" type="button">Voir le code</button>
+        <button id="btn-regenerate-pairing" class="button" type="button">Générer un nouveau secret</button>
+      </div>
+    </section>
+
+    <!-- Ecran 2 : code courant -->
+    <section id="screen-code" class="screen" hidden>
+      <img class="brand" src="opt-cagou.svg" alt="OPT-NC">
+      <h1>Votre code</h1>
+
+      <div class="code-card">
+        <output id="code" class="code">------</output>
+        <div class="countdown">
+          <svg class="ring" viewBox="0 0 48 48" aria-hidden="true">
+            <circle class="ring-track" cx="24" cy="24" r="20"></circle>
+            <circle id="ring-progress" class="ring-progress" cx="24" cy="24" r="20"></circle>
+          </svg>
+          <span id="remaining" class="remaining">--</span>
+        </div>
+      </div>
+      <p class="hint" id="code-hint">Le code se renouvelle automatiquement.</p>
+
+      <form id="config-form" class="config">
+        <h2>Configuration</h2>
+
+        <label for="secret-input">Secret initial (Base32)</label>
+        <input id="secret-input" name="secret" type="text" spellcheck="false"
+               autocomplete="off" placeholder="JBSWY3DPEHPK3PXP" required>
+
+        <div class="config-row">
+          <div>
+            <label for="algorithm">Algorithme</label>
+            <select id="algorithm" name="algorithm">
+              <option value="SHA1">SHA1</option>
+              <option value="SHA256">SHA256</option>
+              <option value="SHA512">SHA512</option>
+            </select>
+          </div>
+          <div>
+            <label for="digits">Chiffres</label>
+            <select id="digits" name="digits">
+              <option value="6">6</option>
+              <option value="8">8</option>
+            </select>
+          </div>
+          <div>
+            <label for="period">Période (s)</label>
+            <input id="period" name="period" type="number" min="10" max="120" step="1" value="30">
+          </div>
+        </div>
+
+        <p class="warn">Google Authenticator ignore SHA256/SHA512 et retombe sur SHA1.</p>
+
+        <div class="actions">
+          <button class="button primary" type="submit">Appliquer</button>
+          <button id="btn-regenerate-code" class="button" type="button">Générer</button>
+          <button id="btn-back" class="button ghost" type="button">← QR code</button>
+        </div>
+
+        <p id="feedback" class="feedback" role="status"></p>
+      </form>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

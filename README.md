@@ -10,7 +10,7 @@ make build
 make start
 ```
 
-Le front est servi sur <http://localhost:8080>. Le back n'est pas publié sur l'hôte :
+Le front est servi sur <http://localhost:8090>. Le back n'est pas publié sur l'hôte :
 nginx relaie `/api` vers `backend:8081` sur le réseau interne, ce qui évite toute
 configuration CORS.
 
@@ -23,6 +23,19 @@ configuration CORS.
 | `make status`  | État des conteneurs           |
 | `make logs`    | Suit les journaux             |
 | `make test`    | Exécute les tests du back-end |
+
+## Accès via Tailscale
+
+Le front peut être publié sur le tailnet (réseau privé Tailscale), sans exposition
+publique :
+
+```sh
+tailscale serve --bg 8090
+```
+
+L'application devient accessible à `https://<nom-de-la-machine>.<tailnet>.ts.net/` depuis
+tout appareil connecté au même tailnet, avec certificat HTTPS valide fourni par Tailscale.
+Pour couper la publication : `tailscale serve reset`.
 
 ## Parcours
 

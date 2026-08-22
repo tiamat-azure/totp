@@ -12,7 +12,7 @@ build: ## Construit les images Docker
 
 start: ## Demarre la pile
 	$(COMPOSE) up -d
-	@echo "Front → http://localhost:8080"
+	@echo "Front → http://localhost:8090"
 
 stop: ## Arrete la pile
 	$(COMPOSE) down

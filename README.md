@@ -12,6 +12,8 @@ make build
 make start
 ```
 
+`make` fonctionne avec Docker ou Podman (Docker s'il est présent, sinon Podman).
+
 Le front est servi sur <http://localhost:8090>. Le back n'est pas publié sur l'hôte :
 nginx relaie `/api` vers `backend:8081` sur le réseau interne, ce qui évite toute
 configuration CORS.

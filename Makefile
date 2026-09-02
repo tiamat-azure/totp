@@ -1,7 +1,9 @@
 .DEFAULT_GOAL := help
 .PHONY: help build start stop restart status logs log test
 
-COMPOSE := docker compose
+# Docker wins when present; Podman is the fallback. Override with ENGINE=...
+ENGINE  := $(shell command -v docker >/dev/null 2>&1 && echo docker || echo podman)
+COMPOSE := $(ENGINE) compose
 
 help: ## Affiche cette aide
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -28,4 +30,4 @@ logs: ## Suit les journaux
 log: logs ## Alias de logs
 
 test: ## Execute les tests du back-end
-	docker run --rm -v "$(CURDIR)/backend:/app" -w /app maven:3.9-eclipse-temurin-21 mvn -B test
+	$(ENGINE) run --rm -v "$(CURDIR)/backend:/app" -w /app maven:3.9-eclipse-temurin-21 mvn -B test

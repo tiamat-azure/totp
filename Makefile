@@ -30,4 +30,4 @@ logs: ## Suit les journaux
 log: logs ## Alias de logs
 
 test: ## Execute les tests du back-end
-	$(ENGINE) run --rm -v "$(CURDIR)/backend:/app" -w /app maven:3.9-eclipse-temurin-21 mvn -B test
+	$(ENGINE) run --rm -v "$(CURDIR)/backend:/app:Z" -w /app docker.io/library/maven:3.9-eclipse-temurin-21 mvn -B test

@@ -1,5 +1,7 @@
 # Démo TOTP - OPT-NC
 
+![Product demo](images/totp-demo.gif)
+
 Générateur de codes TOTP (RFC 6238) : back-end Spring Boot et front-end statique, chacun
 dans son conteneur, orchestrés par Docker Compose.
 
